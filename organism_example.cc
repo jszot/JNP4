@@ -30,12 +30,26 @@ int main() {
     // // wilk spotyka martwego psa (dog_result z przykładu powyżej – nic nie robi,
     // // sosnę – nic nie robi, psa, którego zjada, i słonia , który jest zbyt
     // // silny, żeby go zjeść, zatem nic nie robi.
-    // constexpr Plant<species_id_t> pine(pine_id, 34);
-    // constexpr Herbivore<species_id_t> elephant(elephant_id, 500);
-    // constexpr auto wolf_result_2 = encounter_series(wolf, wolf_result, pine, dog, elephant);
+     constexpr Plant<species_id_t> pine(pine_id, 34);
+     constexpr Herbivore<species_id_t> elephant(elephant_id, 500);
+     /*
+    constexpr auto wolf1 = encounter_series(wolf, dog_result);
+    cout <<(wolf1).get_vitality() << '\n';
+    constexpr auto wolf2 = encounter_series(wolf1, pine);
+    cout << wolf2.get_vitality() << '\n';
+    constexpr auto wolf3 = encounter_series(wolf2, dog);
+    cout << wolf3.get_vitality() << '\n';
+    constexpr auto wolf4 = encounter_series(wolf3, elephant);
+    cout << wolf4.get_vitality() << '\n';
 
-    // static_assert(!wolf_result_2.is_dead());
-    // static_assert(wolf_result_2.get_vitality() == 105);
+
+
+    */
+    constexpr auto wolf_result_2 = encounter_series(wolf, dog_result, pine, dog, elephant);
+
+     //static_assert(!wolf_result_2.is_dead());
+     cout << wolf_result_2.get_vitality() << '\n';
+     //static_assert(wolf_result_2.get_vitality() == 105);
 
     // Funkcja get_species() powinna zwracać gatunek.
     static_assert(wolf.get_species() == wolf_id);
@@ -47,6 +61,6 @@ int main() {
     Plant<std::string> pl1("pp1", 130);
     Plant<std::string> pl2("pp2", 15);
     //this should not compile
-    //  encounter(dgg, gazelle);
-    // encounter(pl1, pl2);
+    //encounter(dgg, gazelle);
+    //encounter(pl1, pl2);
 }
