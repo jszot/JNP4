@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include "organism.h"
 
 using namespace std;
@@ -15,13 +16,15 @@ int main() {
     constexpr Carnivore<species_id_t> wolf(wolf_id, 100);
 
     constexpr auto encounter_result = encounter(wolf, dog);
-    // constexpr auto wolf_result = get<0>(encounter_result);
-    // constexpr auto dog_result = get<1>(encounter_result);
-    // constexpr auto child_result = get<2>(encounter_result);
+    constexpr auto wolf_result = get<0>(encounter_result);
+    constexpr auto dog_result = get<1>(encounter_result);
+    constexpr auto child_result = get<2>(encounter_result);
 
-    // static_assert(wolf_result.get_vitality() == 105);
-    // static_assert(dog_result.is_dead());
-    // static_assert(!child_result.has_value());
+    // cout<<wolf_result.get_vitality()<<"\n";
+    // cout<<dog_result.get_vitality()<<"\n";
+    static_assert(wolf_result.get_vitality() == 105);
+    static_assert(dog_result.is_dead());
+    static_assert(!child_result.has_value());
 
     // // Przykład użycia encounter_series:
     // // wilk spotyka martwego psa (dog_result z przykładu powyżej – nic nie robi,
@@ -34,8 +37,8 @@ int main() {
     // static_assert(!wolf_result_2.is_dead());
     // static_assert(wolf_result_2.get_vitality() == 105);
 
-    // // Funkcja get_species() powinna zwracać gatunek.
-    // static_assert(wolf.get_species() == wolf_id);
+    // Funkcja get_species() powinna zwracać gatunek.
+    static_assert(wolf.get_species() == wolf_id);
 
 
     Herbivore<std::string> gazelle("Gazella dorcas", 130);
