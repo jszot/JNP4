@@ -48,6 +48,25 @@ public:
         return copy(vitality + other.get_vitality());
     }
 
+    constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, can_eat_meat, can_eat_plants> other) {
+        auto acc = encounter(this, other);
+        return get<0>(acc);
+    }
+
+    constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, !can_eat_meat, can_eat_plants> other) {
+        auto acc = encounter(this, other);
+        return get<0>(acc);
+    }
+
+    constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, can_eat_meat, !can_eat_plants> other) {
+        auto acc = encounter(this, other);
+        return get<0>(acc);
+    }
+
+    constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, !can_eat_meat, !can_eat_plants> other) {
+        auto acc = encounter(this, other);
+        return get<0>(acc);
+    }
 };
 
 template <typename species_t>
@@ -139,13 +158,7 @@ get_first(std::tuple<species_t, bool, bool, uint64_t> organism1,
 template <typename species_t, bool sp1_eats_m, bool sp1_eats_p, typename ... Args>
 constexpr Organism<species_t, sp1_eats_m, sp1_eats_p>
 encounter_series(Organism<species_t, sp1_eats_m, sp1_eats_p> organism1, Args ... args) {
-    bool spm = sp1_eats_m;
-    bool spp = sp1_eats_p;
-    auto species = organism1.get_species();
-    auto acc = std::make_tuple(organism1.get_species(), spm, spp, organism1.get_vitality());
-    //get_first(get_first(get_first(organism1, arg1), arg2), arg3)...
-    acc = (get_first(acc,args), ...);
-    return Organism<species_t, sp1_eats_m, sp1_eats_p>(species, get<3>(acc));
+    return (organism1 + ... + args);
 }
 
 #endif
