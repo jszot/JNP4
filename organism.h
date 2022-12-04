@@ -48,26 +48,13 @@ public:
         return copy(vitality + other.get_vitality());
     }
 
-    constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, can_eat_meat, can_eat_plants> other) {
-        auto acc = encounter(*this, other);
-        return get<0>(acc);
-    }
-
-    constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, !can_eat_meat, can_eat_plants> other) {
-        auto acc = encounter(*this, other);
-        return get<0>(acc);
-    }
-
-    constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, can_eat_meat, !can_eat_plants> other) {
-        auto acc = encounter(*this, other);
-        return get<0>(acc);
-    }
-
-    constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, !can_eat_meat, !can_eat_plants> other) {
-        auto acc = encounter(*this, other);
-        return get<0>(acc);
-    }
 };
+
+template <typename species_t, bool sp1_eats_m, bool sp1_eats_p, bool sp2_eats_m, bool sp2_eats_p>
+constexpr Organism<species_t, sp1_eats_m, sp1_eats_p> operator+ (Organism<species_t, sp1_eats_m, sp1_eats_p> org1, Organism<species_t, sp2_eats_m, sp2_eats_p> org2) {
+    auto acc = encounter(org1, org2);
+    return get<0>(acc);
+}
 
 template <typename species_t>
 using Carnivore = Organism<species_t, true, false>;
@@ -147,13 +134,6 @@ encounter(Organism<species_t, sp1_eats_m, sp1_eats_p> organism1,
     return std::make_tuple(organism1, organism2, std::nullopt);
 }
 
-template <typename species_t, bool sp1_eats_m, bool sp1_eats_p, bool sp2_eats_m, bool sp2_eats_p> //does this needs to reapeted?
-std::tuple<species_t, bool, bool, uint64_t>
-get_first(std::tuple<species_t, bool, bool, uint64_t> organism1,
-          Organism<species_t, sp2_eats_m, sp2_eats_p> organism2){
-    Organism<species_t, sp1_eats_m, sp1_eats_p> acc = Organism(get<0>(organism1), get<3>(organism1));
-    return std::make_tuple(get<0>(organism1), get<1>(organism1), get<2>(organism1), get<0>(encounter(acc, organism2)));
-}
 
 template <typename species_t, bool sp1_eats_m, bool sp1_eats_p, typename ... Args>
 constexpr Organism<species_t, sp1_eats_m, sp1_eats_p>
