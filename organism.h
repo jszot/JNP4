@@ -49,22 +49,22 @@ public:
     }
 
     constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, can_eat_meat, can_eat_plants> other) {
-        auto acc = encounter(this, other);
+        auto acc = encounter(*this, other);
         return get<0>(acc);
     }
 
     constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, !can_eat_meat, can_eat_plants> other) {
-        auto acc = encounter(this, other);
+        auto acc = encounter(*this, other);
         return get<0>(acc);
     }
 
     constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, can_eat_meat, !can_eat_plants> other) {
-        auto acc = encounter(this, other);
+        auto acc = encounter(*this, other);
         return get<0>(acc);
     }
 
     constexpr Organism<species_t, can_eat_meat, can_eat_plants> operator+ (Organism<species_t, !can_eat_meat, !can_eat_plants> other) {
-        auto acc = encounter(this, other);
+        auto acc = encounter(*this, other);
         return get<0>(acc);
     }
 };
